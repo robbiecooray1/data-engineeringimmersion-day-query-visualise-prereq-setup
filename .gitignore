@@ -7,12 +7,4 @@ node_modules
 .cdk.staging
 cdk.out
 
-bin/
-lib/
-test/
-*.json
-readme.md
-.npmignore
-jest.config.js
-
 scripts/__*
