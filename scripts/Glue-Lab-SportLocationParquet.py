@@ -21,13 +21,12 @@ S3bucket_node1 = glueContext.create_dynamic_frame.from_catalog(
 ApplyMapping_node2 = ApplyMapping.apply(
     frame=S3bucket_node1,
     mappings=[
-        ("id", "string", "id", "double"),
+        ("id", "long", "id", "double"),
         ("name", "string", "name", "string"),
-        ("abbreviated_name", "string", "abbreviated_name", "string"),
-        ("home_field_id", "long", "home_field_id", "long"),
-        ("sport_type_name", "string", "sport_type_name", "string"),
-        ("sport_league_short_name", "string", "sport_league_short_name", "string"),
-        ("sport_division_short_name", "string", "sport_division_short_name", "string"),
+        ("city", "string", "city", "string"),
+        ("seating_capacity", "long", "seating_capacity", "long"),
+        ("levels", "long", "levels", "long"),
+        ("sections", "long", "sections", "long")
     ],
     transformation_ctx="ApplyMapping_node2",
 )
