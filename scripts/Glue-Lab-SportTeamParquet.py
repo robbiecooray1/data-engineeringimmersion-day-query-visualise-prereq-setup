@@ -5,7 +5,7 @@ from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.job import Job
 
-args = getResolvedOptions(sys.argv, ["JOB_NAME"])
+args = getResolvedOptions(sys.argv, ["JOB_NAME", 'S3_BUCKET_PARQUET_PATH'])
 sc = SparkContext()
 glueContext = GlueContext(sc)
 spark = glueContext.spark_session
@@ -38,7 +38,7 @@ S3bucket_node3 = glueContext.write_dynamic_frame.from_options(
     connection_type="s3",
     format="glueparquet",
     connection_options={
-        "path": "s3://dataengineeringimmersionday-dataengbucket0ec2460a-k0610phk48os/tickets/dms_parquet/sport_team/",
+        "path": "s3://" + args['S3_BUCKET_PARQUET_PATH'] + "sport_team/",
         "partitionKeys": [],
     },
     format_options={"compression": "uncompressed"},
