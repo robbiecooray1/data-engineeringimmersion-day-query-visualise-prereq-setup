@@ -14,7 +14,7 @@ job.init(args["JOB_NAME"], args)
 
 # Script generated for node S3 bucket
 S3bucket_node1 = glueContext.create_dynamic_frame.from_catalog(
-    database="ticketdata", table_name="sport_team", transformation_ctx="S3bucket_node1"
+    database="ticketdata", table_name="sport_location", transformation_ctx="S3bucket_node1"
 )
 
 # Script generated for node ApplyMapping
