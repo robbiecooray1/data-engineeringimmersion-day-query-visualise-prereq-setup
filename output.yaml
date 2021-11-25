@@ -1,0 +1,534 @@
+Resources:
+  dataengbucket0EC2460A:
+    Type: AWS::S3::Bucket
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/data-eng-bucket/Resource
+  CodeBuildRole728CBADE:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/CodeBuildRole/Resource
+  CodeBuildRoleDefaultPolicy829527DE:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":logs:"
+                    - Ref: AWS::Region
+                    - ":"
+                    - Ref: AWS::AccountId
+                    - :log-group:/aws/codebuild/
+                    - Ref: dataengprereq8E000E31
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":logs:"
+                    - Ref: AWS::Region
+                    - ":"
+                    - Ref: AWS::AccountId
+                    - :log-group:/aws/codebuild/
+                    - Ref: dataengprereq8E000E31
+                    - :*
+          - Action:
+              - codebuild:CreateReportGroup
+              - codebuild:CreateReport
+              - codebuild:UpdateReport
+              - codebuild:BatchPutTestCases
+              - codebuild:BatchPutCodeCoverages
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":codebuild:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :report-group/
+                  - Ref: dataengprereq8E000E31
+                  - -*
+        Version: "2012-10-17"
+      PolicyName: CodeBuildRoleDefaultPolicy829527DE
+      Roles:
+        - Ref: CodeBuildRole728CBADE
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/CodeBuildRole/DefaultPolicy/Resource
+  CrawlerRoleA9495AEE:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: glue.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/CrawlerRole/Resource
+  GlueJobRoleF1B69418:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: glue.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+      RoleName: AWSGlueServiceRole-AdminAccess
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/GlueJobRole/Resource
+  GlueJobRoleDefaultPolicy94EFA0CF:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - dataengbucket0EC2460A
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - dataengbucket0EC2460A
+                        - Arn
+                    - /scripts/Glue-Lab-SportTeamParquet.py
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - dataengbucket0EC2460A
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - dataengbucket0EC2460A
+                        - Arn
+                    - /scripts/Glue-Lab-SportLocationParquet.py
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - dataengbucket0EC2460A
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - dataengbucket0EC2460A
+                        - Arn
+                    - /scripts/Glue-Lab-SportingEventParquet.py
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - dataengbucket0EC2460A
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - dataengbucket0EC2460A
+                        - Arn
+                    - /scripts/Glue-Lab-SportingEventTicketParquet.py
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - dataengbucket0EC2460A
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - dataengbucket0EC2460A
+                        - Arn
+                    - /scripts/Glue-Lab-PersonParquet.py
+        Version: "2012-10-17"
+      PolicyName: GlueJobRoleDefaultPolicy94EFA0CF
+      Roles:
+        - Ref: GlueJobRoleF1B69418
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/GlueJobRole/DefaultPolicy/Resource
+  GlueJobSportsTeam043F95FE:
+    Type: AWS::Glue::Job
+    Properties:
+      Command:
+        Name: glueetl
+        PythonVersion: "3"
+        ScriptLocation:
+          Fn::Join:
+            - ""
+            - - s3://
+              - Ref: dataengbucket0EC2460A
+              - /scripts/Glue-Lab-SportTeamParquet.py
+      Role:
+        Fn::GetAtt:
+          - GlueJobRoleF1B69418
+          - Arn
+      DefaultArguments:
+        --job-language: python
+        --job-bookmark-option: job-bookmark-disable
+        --S3_BUCKET_PARQUET_PATH:
+          Fn::Join:
+            - ""
+            - - Ref: dataengbucket0EC2460A
+              - /tickets/dms_parquet/
+      GlueVersion: "3.0"
+      NumberOfWorkers: 10
+      WorkerType: G.1X
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/GlueJobSportsTeam/Resource
+  GlueJobSportLocation89300006:
+    Type: AWS::Glue::Job
+    Properties:
+      Command:
+        Name: glueetl
+        PythonVersion: "3"
+        ScriptLocation:
+          Fn::Join:
+            - ""
+            - - s3://
+              - Ref: dataengbucket0EC2460A
+              - /scripts/Glue-Lab-SportLocationParquet.py
+      Role:
+        Fn::GetAtt:
+          - GlueJobRoleF1B69418
+          - Arn
+      DefaultArguments:
+        --job-language: python
+        --job-bookmark-option: job-bookmark-disable
+        --S3_BUCKET_PARQUET_PATH:
+          Fn::Join:
+            - ""
+            - - Ref: dataengbucket0EC2460A
+              - /tickets/dms_parquet/
+      GlueVersion: "3.0"
+      NumberOfWorkers: 10
+      WorkerType: G.1X
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/GlueJobSportLocation/Resource
+  GlueJobSportingEvent87996766:
+    Type: AWS::Glue::Job
+    Properties:
+      Command:
+        Name: glueetl
+        PythonVersion: "3"
+        ScriptLocation:
+          Fn::Join:
+            - ""
+            - - s3://
+              - Ref: dataengbucket0EC2460A
+              - /scripts/Glue-Lab-SportingEventParquet.py
+      Role:
+        Fn::GetAtt:
+          - GlueJobRoleF1B69418
+          - Arn
+      DefaultArguments:
+        --job-language: python
+        --job-bookmark-option: job-bookmark-disable
+        --S3_BUCKET_PARQUET_PATH:
+          Fn::Join:
+            - ""
+            - - Ref: dataengbucket0EC2460A
+              - /tickets/dms_parquet/
+      GlueVersion: "3.0"
+      NumberOfWorkers: 10
+      WorkerType: G.1X
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/GlueJobSportingEvent/Resource
+  GlueJobSportingEventTicket3982DBCC:
+    Type: AWS::Glue::Job
+    Properties:
+      Command:
+        Name: glueetl
+        PythonVersion: "3"
+        ScriptLocation:
+          Fn::Join:
+            - ""
+            - - s3://
+              - Ref: dataengbucket0EC2460A
+              - /scripts/Glue-Lab-SportingEventTicketParquet.py
+      Role:
+        Fn::GetAtt:
+          - GlueJobRoleF1B69418
+          - Arn
+      DefaultArguments:
+        --job-language: python
+        --job-bookmark-option: job-bookmark-disable
+        --S3_BUCKET_PARQUET_PATH:
+          Fn::Join:
+            - ""
+            - - Ref: dataengbucket0EC2460A
+              - /tickets/dms_parquet/
+      GlueVersion: "3.0"
+      NumberOfWorkers: 10
+      WorkerType: G.1X
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/GlueJobSportingEventTicket/Resource
+  GlueJobPerson29E8A565:
+    Type: AWS::Glue::Job
+    Properties:
+      Command:
+        Name: glueetl
+        PythonVersion: "3"
+        ScriptLocation:
+          Fn::Join:
+            - ""
+            - - s3://
+              - Ref: dataengbucket0EC2460A
+              - /scripts/Glue-Lab-PersonParquet.py
+      Role:
+        Fn::GetAtt:
+          - GlueJobRoleF1B69418
+          - Arn
+      DefaultArguments:
+        --job-language: python
+        --job-bookmark-option: job-bookmark-disable
+        --S3_BUCKET_PARQUET_PATH:
+          Fn::Join:
+            - ""
+            - - Ref: dataengbucket0EC2460A
+              - /tickets/dms_parquet/
+      GlueVersion: "3.0"
+      NumberOfWorkers: 10
+      WorkerType: G.1X
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/GlueJobPerson/Resource
+  dataengdatabase618DBC8C:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId:
+        Ref: AWS::AccountId
+      DatabaseInput:
+        Name: ticketdata
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/data-eng-database/Resource
+  dataengcrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Role:
+        Ref: CrawlerRoleA9495AEE
+      Targets:
+        S3Targets:
+          - Exclusions:
+              - dms_parquet/**
+            Path:
+              Fn::Join:
+                - ""
+                - - Ref: dataengbucket0EC2460A
+                  - /tickets
+      DatabaseName:
+        Ref: dataengdatabase618DBC8C
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/data-eng-crawler
+  dataengparquetcrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Role:
+        Ref: CrawlerRoleA9495AEE
+      Targets:
+        S3Targets:
+          - Path:
+              Fn::Join:
+                - ""
+                - - Ref: dataengbucket0EC2460A
+                  - /tickets/dms_parquet
+      DatabaseName:
+        Ref: dataengdatabase618DBC8C
+      TablePrefix: parquet_
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/data-eng-parquet-crawler
+  dataengprereq8E000E31:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: NO_ARTIFACTS
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:5.0
+        ImagePullCredentialsType: CODEBUILD
+        PrivilegedMode: false
+        Type: LINUX_CONTAINER
+      ServiceRole:
+        Fn::GetAtt:
+          - CodeBuildRole728CBADE
+          - Arn
+      Source:
+        BuildSpec:
+          Fn::Join:
+            - ""
+            - - |-
+                {
+                  "version": "0.2",
+                  "phases": {
+                    "build": {
+                      "commands": [
+                        "git clone https://github.com/robbiecooray1/data-engineeringimmersion-day-query-visualise-prereq-setup.git",
+                        "aws s3 cp --recursive --copy-props none ./data-engineeringimmersion-day-query-visualise-prereq-setup/scripts/ s3://
+              - Ref: dataengbucket0EC2460A
+              - |-
+                /scripts/",
+                        "aws --version",
+                        "aws s3 cp --recursive --copy-props none s3://aws-dataengineering-day.workshop.aws/data/ s3://
+              - Ref: dataengbucket0EC2460A
+              - |-
+                /tickets/",
+                        "cd ./data-engineeringimmersion-day-query-visualise-prereq-setup/scripts/",
+                        "python -c \"from crawl_runner import run_crawler; run_crawler('
+              - Ref: dataengcrawler
+              - |-
+                ')\"",
+                        "python -c \"from job_runner import run_job; run_job('
+              - Ref: GlueJobSportsTeam043F95FE
+              - |-
+                ')\"",
+                        "python -c \"from job_runner import run_job; run_job('
+              - Ref: GlueJobSportLocation89300006
+              - |-
+                ')\"",
+                        "python -c \"from job_runner import run_job; run_job('
+              - Ref: GlueJobSportingEvent87996766
+              - |-
+                ')\"",
+                        "python -c \"from job_runner import run_job; run_job('
+              - Ref: GlueJobSportingEventTicket3982DBCC
+              - |-
+                ')\"",
+                        "python -c \"from job_runner import run_job; run_job('
+              - Ref: GlueJobPerson29E8A565
+              - |-
+                ')\"",
+                        "python -c \"from crawl_runner import run_crawler; run_crawler('
+              - Ref: dataengparquetcrawler
+              - |-
+                ')\""
+                      ]
+                    }
+                  }
+                }
+        Type: NO_SOURCE
+      EncryptionKey: alias/aws/s3
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/data-eng-prereq/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:H4sIAAAAAAAA/02NzQ6CMBCEn4V7WURIvBrx5IngE5SlmkLpJv2RmKbvLgUPnObb3ZmdEsqqhlN25YvNcZiKgGQEhKfjOLGGtHXGo2OdsOQNCta89JFXxyCdJB1Z+hBsBeHmcRIuXXeKTPIZQkdqjydtSUn8pnGnyN7Kr70P6tMyyZ073nO7ZY7cGL4oYSJDGkTvpRogtIZGgVvnH2OMTK8GGG3xKWsoL3DORitlbrx2chbQ7foDRAhk4AIBAAA=
+    Metadata:
+      aws:cdk:path: DataEngineeringimmersionDayQueryVisualisePrereqSetupStack2/CDKMetadata/Default
+    Condition: CDKMetadataAvailable
+Conditions:
+  CDKMetadataAvailable:
+    Fn::Or:
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - af-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ca-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-northwest-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-3
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - sa-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-2
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-2
+

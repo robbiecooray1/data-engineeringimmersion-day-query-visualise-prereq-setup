@@ -3,6 +3,7 @@ import * as s3 from '@aws-cdk/aws-s3';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as iam from '@aws-cdk/aws-iam';
 import * as glue from '@aws-cdk/aws-glue';
+import { CodeBuildTrigger } from './code_build_trigger';
 
 export class DataEngineeringimmersionDayQueryVisualisePrereqSetupStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -174,5 +175,9 @@ export class DataEngineeringimmersionDayQueryVisualisePrereqSetupStack extends c
         },
       }),
     });
+
+    const trigger = new CodeBuildTrigger(this, 'CodeBuildTrigger', {
+      projectName: codeBuildProject.projectName
+    });  
   }
 }
